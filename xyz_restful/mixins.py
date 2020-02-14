@@ -36,3 +36,25 @@ class IDAndStrFieldSerializerMixin(object):
         fns = super(IDAndStrFieldSerializerMixin, self).get_field_names(declared_fields, info)
         fns += ('id', '__str__')
         return fns
+
+
+class BatchActionMixin(object):
+
+    def do_batch_action(self, field_name, default=None):
+        r = self.request
+        qset = self.filter_queryset(self.get_queryset())
+        scope = r.data.get('scope')
+        if scope != 'all':
+            ids = r.data.get('batch_action_ids')
+            if scope == 'exclude':
+                qset = qset.exclude(id__in=ids)
+            else:
+                qset = qset.filter(id__in=ids)
+        rows = 0
+        if isinstance(field_name, (str, unicode)):
+            rows = qset.update(**{field_name: r.data.get(field_name, default)})
+        elif callable(field_name):
+            rows = len(qset)
+            for a in qset:
+                field_name(a)
+        return response.Response({'rows': rows})

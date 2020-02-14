@@ -78,7 +78,7 @@ class RelatedChoicesMetadata(SimpleMetadata):
                                        search_fields]
             from django_tables2.utils import A
             ffs = A('filter_class._meta.fields').resolve(view, quiet=True) or getattr(view, 'filter_fields', [])
-            search['filter_fields'] = isinstance(ffs, dict) and ffs.keys() or ffs
+            search['filter_fields'] = isinstance(ffs, dict) and [{'name':k, 'lookups':v} for k ,v in ffs.iteritems()] or ffs
             search['ordering_fields'] = getattr(view, 'ordering_fields', [])
             serializer = view.get_serializer()
             actions['LIST'] = self.get_list_info(serializer)
