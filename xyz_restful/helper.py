@@ -30,7 +30,7 @@ def register(package, resource, viewset, base_name=None):
 def register_urlpatterns(package, urls):
     from django.conf.urls import include, url
     app_name = package.split(".")[-1]
-    router.add_urls([url(r'^%s/' % app_name, include(urls))])
+    router.add_urls([url(r'^%s/' % app_name, include(urls, namespace=app_name))])
 
 
 def get_models():
