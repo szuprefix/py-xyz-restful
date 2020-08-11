@@ -40,7 +40,7 @@ class IDAndStrFieldSerializerMixin(object):
 
 class BatchActionMixin(object):
 
-    def do_batch_action(self, field_name, default=None):
+    def do_batch_action(self, field_name, default=None, extra_params={}):
         r = self.request
         qset = self.filter_queryset(self.get_queryset())
         scope = r.data.get('scope')
@@ -52,7 +52,9 @@ class BatchActionMixin(object):
                 qset = qset.filter(id__in=ids)
         rows = 0
         if isinstance(field_name, (str, unicode)):
-            rows = qset.update(**{field_name: r.data.get(field_name, default)})
+            d = {field_name: r.data.get(field_name, default)}
+            d.update(extra_params)
+            rows = qset.update(**d)
         elif callable(field_name):
             rows = len(qset)
             for a in qset:

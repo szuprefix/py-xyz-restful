@@ -54,8 +54,9 @@ class RelatedChoicesMetadata(SimpleMetadata):
         if not hasattr(field, "queryset") or field.queryset is None:
             return field_info
         qset = field.queryset
+        model = qset.model
         meta = qset.model._meta
-        field_info['model'] = meta.label_lower
+        field_info['model'] = hasattr(model, 'alias') and meta.app_label+'.'+model.alias.lower() or meta.label_lower
         if not field.label:
             field_info['label'] = meta.verbose_name_plural
         return field_info

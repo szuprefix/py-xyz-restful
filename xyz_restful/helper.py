@@ -51,7 +51,10 @@ def get_model_viewsets():
     for a, b, c in router.registry:
         try:
             mn = a.replace('/', '.')
-            m = apps.get_model(mn)
+            if hasattr(b, 'queryset'):
+                m = b.queryset.model
+            else:
+                m = apps.get_model(mn)
             r[mn] = b
         except:
             pass
@@ -61,7 +64,7 @@ def get_model_viewsets():
 def get_model_actions():
     r = {}
     for mn, vs in get_model_viewsets().iteritems():
-        r[mn] = [a for a in ['create', 'update', 'destroy'] if hasattr(vs, a)] + [a.url_path for a in
+        r[mn] = [a for a in ['create', 'update', 'destroy', 'partial_update','retrieve', 'list', 'metadata'] if hasattr(vs, a)] + [a.url_path for a in
                                                                                   vs.get_extra_actions()]
     return r
 
