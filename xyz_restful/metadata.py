@@ -32,7 +32,18 @@ class RelatedChoicesMetadata(SimpleMetadata):
                 metadata['generic_foreign_key'] = {'name': gfk.name, 'ct_field': gfk.ct_field, 'fk_field': gfk.fk_field}
             if m.unique_together:
                 metadata['unique_together'] = m.unique_together
+            self.add_model_field_default_value(metadata, model)
         return metadata
+
+    def add_model_field_default_value(self, metadata, model):
+        pd = metadata.get('actions', {}).get('POST')
+        if not pd:
+            return
+        from django.db.models.fields import NOT_PROVIDED
+        for f in model._meta.get_fields():
+            default = getattr(f, 'default', NOT_PROVIDED)
+            if default != NOT_PROVIDED:
+                pd[f.name]['default'] = default
 
     def get_dependencies(self, metadata):
         return [
