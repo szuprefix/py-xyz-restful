@@ -11,6 +11,7 @@ from django.http import Http404
 from rest_framework import exceptions
 from rest_framework.request import clone_request
 from xyz_util.modelutils import get_generic_foreign_key, get_related_field_verbose_name
+from xyz_util.datautils import access
 
 __author__ = 'denishuang'
 
@@ -88,8 +89,7 @@ class RelatedChoicesMetadata(SimpleMetadata):
             actions['SEARCH'] = search = {}
             search['search_fields'] = [get_related_field_verbose_name(view.queryset.model, cf(f)) for f in
                                        search_fields]
-            from django_tables2.utils import A
-            ffs = A('filter_class._meta.fields').resolve(view, quiet=True) or getattr(view, 'filter_fields', [])
+            ffs = access(view,'filter_class._meta.fields') or getattr(view, 'filter_fields', [])
             search['filter_fields'] = isinstance(ffs, dict) and [{'name':k, 'lookups':v} for k ,v in ffs.iteritems()] or ffs
             search['ordering_fields'] = getattr(view, 'ordering_fields', [])
             serializer = view.get_serializer()
