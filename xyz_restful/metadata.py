@@ -42,6 +42,8 @@ class RelatedChoicesMetadata(SimpleMetadata):
             return
         from django.db.models.fields import NOT_PROVIDED
         for f in model._meta.get_fields():
+            if f.name not in pd:
+                continue
             default = getattr(f, 'default', NOT_PROVIDED)
             if default != NOT_PROVIDED:
                 pd[f.name]['default'] = default

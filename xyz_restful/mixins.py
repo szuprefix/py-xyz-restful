@@ -28,7 +28,7 @@ class ProtectDestroyMixin(object):
         try:
             return super(ProtectDestroyMixin, self).perform_destroy(instance)
         except ProtectedError:
-            raise exceptions.APIException('请先删除全部关联资料', 537)
+            raise exceptions.MethodNotAllowed(self.request.method, detail='请先删除全部关联资料')
 
 
 class IDAndStrFieldSerializerMixin(object):
