@@ -13,3 +13,15 @@ def register(**kwargs):
         return viewset_class
 
     return _model_view_set_wrapper
+
+def register_raw(**kwargs):
+    the_path = kwargs.pop('path', None)
+    def _raw_view_set_wrapper(viewset_class):
+        app_name = viewset_class.__module__.split('.')[0]
+        viewset_name = viewset_class.__name__.replace('ViewSet', '').lower()
+        path = the_path or '%s/%s' % (app_name, viewset_name)
+        from .helper import router
+        router.register(path, viewset_class, basename=app_name, **kwargs)
+        return viewset_class
+
+    return _raw_view_set_wrapper
