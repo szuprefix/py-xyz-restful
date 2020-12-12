@@ -23,12 +23,11 @@ class UserApiMixin(RestCreateMixin):
 
 class ProtectDestroyMixin(object):
 
-    def perform_destroy(self, instance):
+    def handle_exception(self, exc):
         from django.db.models import ProtectedError
-        try:
-            return super(ProtectDestroyMixin, self).perform_destroy(instance)
-        except ProtectedError:
-            raise exceptions.MethodNotAllowed(self.request.method, detail='请先删除全部关联资料')
+        if isinstance(exc, ProtectedError):
+            exc = exceptions.MethodNotAllowed(self.request.method, detail='请先删除全部关联资料')
+        return super(ProtectDestroyMixin, self).handle_exception(exc)
 
 
 class IDAndStrFieldSerializerMixin(object):
