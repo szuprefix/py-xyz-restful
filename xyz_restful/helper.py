@@ -30,7 +30,7 @@ def register(package, resource, viewset, base_name=None):
 def register_urlpatterns(package, urls):
     from django.conf.urls import include, url
     app_name = package.split(".")[-1]
-    router.add_urls([url(r'^%s/' % app_name, include(urls, namespace=app_name))])
+    router.add_urls([url(r'^%s/' % app_name, include(urls))])
 
 
 def get_models():
@@ -63,7 +63,7 @@ def get_model_viewsets():
 
 def get_model_actions():
     r = {}
-    for mn, vs in get_model_viewsets().iteritems():
+    for mn, vs in get_model_viewsets().items():
         r[mn] = [a for a in ['create', 'update', 'destroy', 'partial_update','retrieve', 'list', 'metadata'] if hasattr(vs, a)] + [a.url_path for a in
                                                                                   vs.get_extra_actions()]
     return r
@@ -73,7 +73,7 @@ def get_relation_map(reverse=False):
     d = {}
     mds = get_models()
     mdns = mds.keys()
-    for n, m in mds.iteritems():
+    for n, m in mds.items():
         for f in m._meta.get_fields():
             if not f.is_relation or f.many_to_one:
                 continue
@@ -99,7 +99,7 @@ def get_user_resources():
     a = mm.get(start_point)
     d = {}
     dp = {}
-    for k, v in a.iteritems():
+    for k, v in a.items():
         d.setdefault(k, [])
         for r in v:
             fp = r[0].name
@@ -112,7 +112,7 @@ def get_user_resources():
             a = mm.get(dk)
             if not a:
                 continue
-            for k, v in a.iteritems():
+            for k, v in a.items():
                 if k == start_point:
                     continue
                 d.setdefault(k, [])

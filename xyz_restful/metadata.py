@@ -92,7 +92,7 @@ class RelatedChoicesMetadata(SimpleMetadata):
             search['search_fields'] = [get_related_field_verbose_name(view.queryset.model, cf(f)) for f in
                                        search_fields]
             ffs = access(view,'filter_class._meta.fields') or getattr(view, 'filter_fields', [])
-            search['filter_fields'] = isinstance(ffs, dict) and [{'name':k, 'lookups':v} for k ,v in ffs.iteritems()] or ffs
+            search['filter_fields'] = isinstance(ffs, dict) and [{'name':k, 'lookups':v} for k ,v in ffs.items()] or ffs
             search['ordering_fields'] = getattr(view, 'ordering_fields', [])
             serializer = view.get_serializer()
             actions['LIST'] = self.get_list_info(serializer)
