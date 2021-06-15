@@ -70,7 +70,7 @@ class RelatedChoicesMetadata(SimpleMetadata):
         qset = field.queryset
         model = qset.model
         meta = qset.model._meta
-        field_info['model'] = hasattr(model, 'alias') and meta.app_label+'.'+model.alias.lower() or meta.label_lower
+        field_info['model'] = hasattr(model, 'alias') and meta.app_label + '.' + model.alias.lower() or meta.label_lower
         if not field.label:
             field_info['label'] = meta.verbose_name_plural
         return field_info
@@ -91,8 +91,11 @@ class RelatedChoicesMetadata(SimpleMetadata):
             actions['SEARCH'] = search = {}
             search['search_fields'] = [get_related_field_verbose_name(view.queryset.model, cf(f)) for f in
                                        search_fields]
-            ffs = access(view,'filter_class._meta.fields') or getattr(view, 'filter_fields', [])
-            search['filter_fields'] = isinstance(ffs, dict) and [{'name':k, 'lookups':v} for k ,v in ffs.items()] or ffs
+            ffs = access(view, 'filter_class._meta.fields') or getattr(view, 'filter_fields', [])
+            if isinstance(ffs, dict):
+                search['filter_fields'] = [{'name': k, 'lookups': v} for k, v in ffs.items()]
+            else:
+                search['filter_fields'] = [{'name': a, 'lookups': 'exact'} for a in ffs]
             search['ordering_fields'] = getattr(view, 'ordering_fields', [])
             serializer = view.get_serializer()
             actions['LIST'] = self.get_list_info(serializer)
