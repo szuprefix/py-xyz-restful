@@ -3,6 +3,8 @@ from rest_framework import decorators, response, status, exceptions
 
 __author__ = 'denishuang'
 
+from six import string_types
+
 
 class RestCreateMixin(object):
     def get_serializer_save_args(self):
@@ -50,7 +52,7 @@ class BatchActionMixin(object):
             else:
                 qset = qset.filter(id__in=ids)
         rows = 0
-        if isinstance(field_name, (str, unicode)):
+        if isinstance(field_name, string_types):
             d = {field_name: r.data.get(field_name, default)}
             d.update(extra_params)
             rows = qset.update(**d)
