@@ -1,8 +1,8 @@
 =================
-XYZ REST API
+XYZ RestFul API
 =================
 
-XYZ REST API provides a way to register django-rest-framework apis as easy as Django models.
+XYZ RestFul API provides a way to register django-rest-framework apis as easy as Django admins.
 
 Usage Example
 -------------
