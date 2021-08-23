@@ -23,7 +23,7 @@ in app comment, create a file ``"comment/apis.py"``
     from xyz_restful.decorators import register
 
     @register()
-    class PostViewSet(UserApiMixin, viewsets.ModelViewSet):
+    class PostViewSet(viewsets.ModelViewSet):
         serializer_class = serializers.PostSerializer
         queryset = models.Post.objects.all()
 
