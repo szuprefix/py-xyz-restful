@@ -1,0 +1,31 @@
+=================
+XYZ REST API
+=================
+
+XYZ REST API provides a way to register django-rest-framework apis as easy as Django models.
+
+Usage Example
+-------------
+
+register url router in project's ``"urls.py"``
+::
+
+    from xyz_restful.helper import router
+
+    urlpatterns = [
+        url(r'^admin/', admin.site.urls),
+        url(r'^api/', include(router.urls)),
+        ...
+    ]
+
+in app comment, create a file ``"comment/apis.py"``
+::
+    from xyz_restful.decorators import register
+
+    @register()
+    class PostViewSet(UserApiMixin, viewsets.ModelViewSet):
+        serializer_class = serializers.PostSerializer
+        queryset = models.Post.objects.all()
+
+then, full api url just like :
+``http://127.0.0.1:8000/api/comment/post/``
