@@ -7,7 +7,16 @@ XYZ RestFul API provides a way to register django-rest-framework apis as easy as
 Usage Example
 -------------
 
-register url router in project's ``"urls.py"``
+First, add 'xyz_restful' into django settings's INSTALLED_APPS
+::
+
+INSTALLED_APPS = [
+    ...
+    'xyz_restful',
+    ...
+]
+
+Then, register url router in project's ``"urls.py"``
 ::
 
     from xyz_restful.helper import router
@@ -18,7 +27,7 @@ register url router in project's ``"urls.py"``
         ...
     ]
 
-in app comment, create a file ``"comment/apis.py"``
+Then, in an app for example: comment , create a file ``"comment/apis.py"``
 ::
     from xyz_restful.decorators import register
 
@@ -29,3 +38,5 @@ in app comment, create a file ``"comment/apis.py"``
 
 then, full api url just like :
 ``http://127.0.0.1:8000/api/comment/post/``
+
+Enjoyed!

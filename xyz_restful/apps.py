@@ -16,8 +16,12 @@ class Config(AppConfig):
 
     def ready(self):
         super(Config, self).ready()
-        from xyz_util import modelutils
-        serializers.ModelSerializer.serializer_field_mapping.update({modelutils.JSONField: serializers.JSONField})
+        try:
+            from xyz_util import modelutils
+            serializers.ModelSerializer.serializer_field_mapping.update({modelutils.JSONField: serializers.JSONField})
+        except:
+            import traceback
+            traceback.print_exc()
         self.autodiscover()
 
 
