@@ -10,11 +10,11 @@ Usage Example
 First, add 'xyz_restful' into django settings's INSTALLED_APPS
 ::
 
-INSTALLED_APPS = [
-    ...
-    'xyz_restful',
-    ...
-]
+    INSTALLED_APPS = [
+        ...
+        'xyz_restful',
+        ...
+    ]
 
 Then, register url router in project's ``"urls.py"``
 ::
@@ -29,6 +29,7 @@ Then, register url router in project's ``"urls.py"``
 
 Then, in an app for example: comment , create a file ``"comment/apis.py"``
 ::
+
     from xyz_restful.decorators import register
 
     @register()
