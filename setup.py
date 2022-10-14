@@ -10,6 +10,7 @@ setup(
     author_email="szuprefix@126.com",
     description="restful utils",
     long_description=open("README.rst").read(),
+    long_description_content_type="text/x-rst",
     license="MIT",
     url="https://github.com/szuprefix/py-xyz-restful",
     packages=find_packages(exclude=['tests.*', 'tests', 'testproject', 'example.*', 'example']),
