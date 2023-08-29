@@ -17,7 +17,12 @@ def register(**kwargs):
 def register_raw(**kwargs):
     the_path = kwargs.pop('path', None)
     def _raw_view_set_wrapper(viewset_class):
-        app_name = viewset_class.__module__.split('.')[0]
+        mod_name = viewset_class.__module__.split('.')[0]
+        try:
+            from importlib import import_module
+            app_name = import_module('%s.apps' % mod_name).Config.label
+        except: 
+            app_name = mod_name
         viewset_name = viewset_class.__name__.replace('ViewSet', '').lower()
         path = the_path or '%s/%s' % (app_name, viewset_name)
         from .helper import router

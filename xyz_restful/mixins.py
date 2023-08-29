@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from rest_framework import decorators, response, status, exceptions
-
+from .signals import batch_action_post
 __author__ = 'denishuang'
 
 from six import string_types
@@ -60,4 +60,5 @@ class BatchActionMixin(object):
             rows = len(qset)
             for a in qset:
                 field_name(a)
+        batch_action_post.send_robust(sender=qset.model, queryset=qset, field_name=field_name, default=default)
         return response.Response({'rows': rows})

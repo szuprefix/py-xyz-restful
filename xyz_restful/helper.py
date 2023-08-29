@@ -22,9 +22,9 @@ class newRouter(DefaultRouter):
 router = newRouter()
 
 
-def register(package, resource, viewset, base_name=None):
-    p = "%s/%s" % (package.split(".")[-1], resource)
-    router.register(p, viewset, base_name=base_name)
+# def register(package, resource, viewset, base_name=None):
+#     p = "%s/%s" % (package.split(".")[-1], resource)
+#     router.register(p, viewset, base_name=base_name)
 
 
 def register_urlpatterns(package, urls):
