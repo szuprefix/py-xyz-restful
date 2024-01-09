@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from rest_framework import decorators, response, status, exceptions
 from .signals import batch_action_post
+
 __author__ = 'denishuang'
 
 from six import string_types
@@ -64,5 +65,7 @@ class BatchActionMixin(object):
             batch_action_post.send(sender=qset.model, queryset=qset, field_name=field_name, default=default)
         except:
             import traceback
+            import logging
+            log = logging.getLogger('django')
             log.error('batch_action_post error: %s', traceback.format_exc())
         return response.Response({'rows': rows})
