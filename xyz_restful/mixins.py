@@ -53,6 +53,7 @@ class BatchActionMixin(object):
             else:
                 qset = qset.filter(id__in=ids)
         rows = 0
+        aids = list(qset.values_list('id', flat=True))
         if isinstance(field_name, string_types):
             d = {field_name: r.data.get(field_name, default)}
             d.update(extra_params)
@@ -62,7 +63,7 @@ class BatchActionMixin(object):
             for a in qset:
                 field_name(a)
         try:
-            batch_action_post.send(sender=qset.model, queryset=qset, field_name=field_name, default=default)
+            batch_action_post.send(sender=qset.model, queryset=qset.model.objects.filter(id__in=aids), field_name=field_name, default=default)
         except:
             import traceback
             import logging
