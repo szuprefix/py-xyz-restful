@@ -46,6 +46,8 @@ class RelatedChoicesMetadata(SimpleMetadata):
                 continue
             default = getattr(f, 'default', NOT_PROVIDED)
             if default != NOT_PROVIDED:
+                if callable(default):
+                    default = default()
                 pd[f.name]['default'] = default
 
     def get_dependencies(self, metadata):
