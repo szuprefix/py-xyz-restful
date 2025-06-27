@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 from xyz_util.views import csrf_token
 
 urlpatterns = [
-    url(r'^csrf_token/$', csrf_token, name='csrf_token')
+    path(r'^csrf_token/$', csrf_token, name='csrf_token')
 ]
 

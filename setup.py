@@ -5,7 +5,7 @@ import sys
 
 setup(
     name="xyz-restful",
-    version="0.2.0",
+    version="0.3.0",
     author="szuprefix",
     author_email="szuprefix@126.com",
     description="restful utils",
