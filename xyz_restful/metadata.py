@@ -93,7 +93,7 @@ class RelatedChoicesMetadata(SimpleMetadata):
             actions['SEARCH'] = search = {}
             search['search_fields'] = [get_related_field_verbose_name(view.queryset.model, cf(f)) for f in
                                        search_fields]
-            ffs = access(view, 'filter_class._meta.fields') or getattr(view, 'filter_fields', [])
+            ffs = access(view, 'filter_class._meta.fields') or getattr(view, 'filterset_fields', [])
             if isinstance(ffs, dict):
                 search['filter_fields'] = [{'name': k, 'lookups': v} for k, v in ffs.items()]
             else:
