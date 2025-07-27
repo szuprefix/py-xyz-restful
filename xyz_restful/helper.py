@@ -28,9 +28,9 @@ router = newRouter()
 
 
 def register_urlpatterns(package, urls):
-    from django.conf.urls import include, url
+    from django.urls import include, re_path
     app_name = package.split(".")[-1]
-    router.add_urls([url(r'^%s/' % app_name, include(urls))])
+    router.add_urls([re_path(r'^%s/' % app_name, include(urls))])
 
 
 def get_models():
