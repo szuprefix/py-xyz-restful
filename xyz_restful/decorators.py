@@ -12,7 +12,14 @@ def register(**kwargs):
         except AttributeError:
             raise ValueError(f"Unable to determine model for {viewset_class}")
 
-        mdn = getattr(model, 'alias', model._meta.model_name).lower()
+        # print(model._meta.model_name)
+        model_alias = getattr(model, "alias", None)
+        mdn = (
+            model_alias.lower()
+            if isinstance(model_alias, str) and model_alias
+            else model._meta.model_name.lower()
+        ) 
+        # print(mdn)
         app_name = model._meta.app_label
         path = kwargs.pop('path', None) or f"{app_name}/{mdn}"
 
