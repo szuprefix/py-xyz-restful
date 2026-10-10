@@ -8,29 +8,29 @@ def register(**kwargs):
 
     def _model_view_set_wrapper(viewset_class):
         try:
-            model = viewset_class.queryset.model if viewset_class.queryset is not None else viewset_class.serializer_class.Meta.model
-        except AttributeError:
-            raise ValueError(f"Unable to determine model for {viewset_class}")
+            model = (
+                viewset_class.queryset.model
+                if viewset_class.queryset is not None
+                else viewset_class.serializer_class.Meta.model
+            )
+        except AttributeError as exc:
+            raise ValueError(
+                f"Unable to determine model for {viewset_class}"
+            ) from exc
 
-        # print(model._meta.model_name)
-        model_alias = getattr(model, "alias", None)
-        mdn = (
-            model_alias.lower()
-            if isinstance(model_alias, str) and model_alias
-            else model._meta.model_name.lower()
-        ) 
-        # print(mdn)
+        options = kwargs.copy()
         app_name = model._meta.app_label
-        path = kwargs.pop('path', None) or f"{app_name}/{mdn}"
+        model_name = model._meta.model_name
 
-        basename = kwargs.pop('basename', f'{app_name}_{mdn}')
-        # print(kwargs)
-        router.register(path, viewset_class, basename=basename, **kwargs)
+        path = options.pop("path", None) or f"{app_name}/{model_name}"
+        basename = options.pop("basename", f"{app_name}_{model_name}")
 
+        router.register(
+            path, viewset_class, basename=basename, **options
+        )
         return viewset_class
 
     return _model_view_set_wrapper
-
 
 def register_raw(**kwargs):
     the_path = kwargs.pop('path', None)
